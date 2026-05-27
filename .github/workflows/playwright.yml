@@ -2,9 +2,11 @@ name: Playwright End-to-End Tests
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   playwright:
@@ -12,13 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [24]
+        node-version: ['lts/*']
     env:
       CI: true
       DEBUG: pw:webserver
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:

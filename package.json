@@ -63,8 +63,7 @@
     "microblogging"
   ],
   "engines": {
-    "pnpm": ">=10"
+    "pnpm": ">=11"
   },
-  "packageManager": "pnpm@10.29.1",
   "nx": {}
 }

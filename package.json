@@ -65,6 +65,6 @@
   "engines": {
     "pnpm": ">=10"
   },
-  "packageManager": "pnpm@10.29.1",
+  "packageManager": "pnpm@11.3.0",
   "nx": {}
 }

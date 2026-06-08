@@ -1,34 +1,43 @@
-# Add 'repo' label to any root file changes
-repo:
-  - '*'
+# 🏷️ Auto-labels based on changed paths (actions/labeler v6 syntax)
 
-# Add '@domain/core' label to any change within the 'core' package
-'@domain/core':
-  - package/core/**
+# Client application source
+client:
+  - apps/client/**
 
-# Add 'test' label to any change to *.spec.js files within the source dir
-test:
-  - apps/**/*.spec.js
-
-# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
-source:
-  - any: ['apps/**', '!apps/docs/*']
-
-# Add 'frontend` label to any change to *.js files as long as the `main.js` hasn't changed
-frontend:
-  - any: ['apps/client/**/*.ts', 'apps/client/**/*.tsx']
-    all: ['!apps/client/index.tsx']
-
+# Documentation / Storybook / Stories
 docs:
-  - any: ['apps/docs/**/*.ts', 'apps/docs/**/*.tsx']
-    all: ['!apps/docs/src/main.tsx']
+  - apps/docs/**
+  - .storybook/**
+  - any: ['**/*.stories.ts', '**/*.stories.tsx']
 
-# Add the 'AnyChange' label to any changes within the entire repository if the 'dot' option is set to 'false'
-AnyChange:
-  - '**'
-  - '**/.*'
-  - '**/.*/**'
-  - '**/.*/**/.*'
-# Add the 'AnyChange' label to any changes within the entire repository if the 'dot' option is set to 'true'
-# AnyChange:
-# - '**'
+# End-to-end tests (Playwright)
+e2e:
+  - tests/**
+  - playwright/**
+  - playwright.config.ts
+
+# Unit tests
+unit-test:
+  - any:
+      [
+        'apps/client/**/*.test.ts',
+        'apps/client/**/*.test.tsx',
+        'apps/client/**/*.spec.ts',
+      ]
+
+# CI/CD workflows and config
+ci:
+  - .github/workflows/**
+  - .github/labeler.yml
+
+# Root-level config files
+config:
+  - any: ['*.yml', '*.yaml', '*.json', 'nx.json', '.node-version']
+    all: ['!pnpm-lock.yaml']
+
+# Dependency changes
+deps:
+  - package.json
+  - pnpm-lock.yaml
+  - pnpm-workspace.yaml
+  - apps/*/package.json

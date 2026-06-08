@@ -11,12 +11,14 @@ jobs:
         working-directory: ./apps/docs
     strategy:
       matrix:
-        node-version: [24]
+        node-version: ['lts/*']
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:

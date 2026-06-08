@@ -2,45 +2,52 @@
 
 # Client application source
 frontend:
-  - any
-    - apps/client/**
+  - any:
+      - 'apps/client/**'
 
 # Documentation / Storybook / Stories
 docs:
   - changed-files:
-      ['apps/docs/**', '.storybook/**', '**/*.stories.ts', '**/*.stories.tsx']
+      - 'apps/docs/**'
+      - '.storybook/**'
+      - '**/*.stories.ts'
+      - '**/*.stories.tsx'
 
 # End-to-end tests (Playwright)
 e2e:
-  - any
-    - tests/**
-    - playwright/**
-    - playwright.config.ts
+  - any:
+      - 'tests/**'
+      - 'playwright/**'
+      - 'playwright.config.ts'
 
 # Unit tests
 unit-test:
   - any:
-      [
-        'apps/client/**/*.test.ts',
-        'apps/client/**/*.test.tsx',
-        'apps/client/**/*.spec.ts',
-      ]
+      - 'apps/client/**/*.test.ts'
+      - 'apps/client/**/*.test.tsx'
+      - 'apps/client/**/*.spec.ts'
 
 # CI/CD workflows and config
 ci:
-  - any
-    - .github/workflows/**
-    - .github/labeler.yml
+  - any:
+      - '.github/workflows/**'
+      - '.github/labeler.yml'
 
 # Root-level config files
 config:
-  - any: ['*.yml', '*.yaml', '*.json', 'nx.json', '.node-version']
-    all: ['!pnpm-lock.yaml']
+  - any:
+      - '*.yml'
+      - '*.yaml'
+      - '*.json'
+      - 'nx.json'
+      - '.node-version'
+    all:
+      - '!pnpm-lock.yaml'
 
 # Dependency changes
 deps:
-  - any
-    - package.json
-    - pnpm-lock.yaml
-    - pnpm-workspace.yaml
-    - apps/*/package.json
+  - any:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'apps/*/package.json'

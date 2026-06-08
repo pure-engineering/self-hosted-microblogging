@@ -32,8 +32,13 @@ ci:
 
 # Root-level config files
 config:
-  - any: ['*.yml', '*.yaml', '*.json', 'nx.json', '.node-version']
-    all: ['!pnpm-lock.yaml']
+  - any:
+      - '*.yml'
+      - '*.yaml'
+      - '*.json'
+      - 'nx.json'
+      - '.node-version'
+      - '!pnpm-lock.yaml'
 
 # Dependency changes
 deps:

@@ -5,7 +5,6 @@
     "jsx": "react-jsx",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "rootDir": "./",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
@@ -19,6 +18,11 @@
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "types": ["node"]
-  }
+    "types": ["node"],
+    "paths": {
+      "~/*": ["./apps/client/app/*"]
+    },
+    "baseUrl": "."
+  },
+  "exclude": ["apps/docs"]
 }

@@ -5,7 +5,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
-    // "baseUrl": ".",
+    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"]
     }

@@ -24,9 +24,6 @@ updates:
         patterns:
           - 'eslint*'
           - '@typescript-eslint/*'
-      nx:
-        patterns:
-          - '@nx/*'
       vitest:
         patterns:
           - 'vitest'

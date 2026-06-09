@@ -1,15 +1,15 @@
 {
   "name": "client",
   "version": "2.12.1",
+  "private": true,
   "main": "app/index.tsx",
   "homepage": "https://pure-js.github.io/self-hosted-microblogging/",
   "type": "module",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "dev": "vite serve",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b",
+    "typecheck": "tsc -b --noEmit",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "e2e": "playwright test",
@@ -66,11 +66,10 @@
     "microblogging"
   ],
   "engines": {
-    "node": ">=20.9",
-    "pnpm": ">=9.8"
+    "node": ">=24",
+    "pnpm": ">=11"
   },
   "msw": {
     "workerDirectory": "public"
-  },
-  "packageManager": "pnpm@10.5.2+sha512.da9dc28cd3ff40d0592188235ab25d3202add8a207afbedc682220e4a0029ffbff4562102b9e6e46b4e3f9e8bd53e6d05de48544b0c57d4b0179e22c76d1199b"
+  }
 }

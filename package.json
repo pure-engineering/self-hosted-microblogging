@@ -1,24 +1,30 @@
 {
   "name": "self-hosted-microblogging",
   "version": "2.12.3",
+  "private": true,
   "description": "Self-hosted Microblogging Frontend App",
   "main": "apps/client/app/index.tsx",
   "homepage": "https://pure-js.github.io/self-hosted-microblogging/",
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "nx g client serve",
-    "build": "nx g client build",
-    "preview": "nx g client preview",
-    "typecheck": "tsc -b --noEmit",
-    "test": "vitest run",
-    "coverage": "vitest run --coverage",
-    "e2e": "playwright test",
+    "dev": "pnpm --filter client dev",
+    "build": "pnpm --filter client build",
+    "preview": "pnpm --filter client preview",
+    "typecheck": "pnpm --filter client typecheck",
+    "test": "pnpm --filter client test",
+    "coverage": "pnpm --filter client coverage",
+    "e2e": "pnpm --filter client e2e",
     "deploy": "act -j publish",
     "release": "standard-version",
     "lint": "eslint apps/client --ext .tsx,.jsx,.js,.ts",
     "format:check": "prettier --check .",
-    "format:write": "prettier --write ."
+    "format:write": "prettier --write .",
+    "docs:dev": "pnpm --filter docs dev",
+    "docs:build": "pnpm --filter docs build",
+    "docs:preview": "pnpm --filter docs preview",
+    "docs:storybook": "pnpm --filter docs storybook",
+    "docs:build-storybook": "pnpm --filter docs build-storybook"
   },
   "repository": {
     "type": "git",
@@ -30,12 +36,7 @@
     "url": "https://github.com/pure-js/self-hosted-microblogging/issues"
   },
   "devDependencies": {
-    "@nx/eslint": "20.1.4",
-    "@nx/playwright": "20.1.4",
-    "@nx/storybook": "20.1.4",
-    "@nx/vite": "20.1.4",
-    "@nx/web": "20.1.4",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.60.0",
     "@storybook/experimental-addon-test": "^8.6.3",
     "@types/node": "^24.13.1",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -53,7 +54,6 @@
     "eslint-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-unicorn": "^55.0.0",
-    "nx": "20.1.4",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "standard-version": "^9.5.0",
@@ -65,6 +65,5 @@
   ],
   "engines": {
     "pnpm": ">=11"
-  },
-  "nx": {}
+  }
 }

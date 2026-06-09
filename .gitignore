@@ -36,10 +36,7 @@ coverage/
 /playwright-report/
 /playwright/.cache/
 
-# NX
-.nx/cache
-.nx/workspace-data
-vite.config.*.timestamp*
 
 # Miscellaneous
 .omo/
+vite.config.*.timestamp*

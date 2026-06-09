@@ -39,7 +39,6 @@ config:
       - '*.yml'
       - '*.yaml'
       - '*.json'
-      - 'nx.json'
       - '.node-version'
       - '!pnpm-lock.yaml'
 

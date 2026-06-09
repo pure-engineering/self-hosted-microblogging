@@ -5,4 +5,3 @@ allowBuilds:
   '@swc/core': true
   esbuild: true
   msw: true
-  nx: true

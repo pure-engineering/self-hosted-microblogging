@@ -10,7 +10,6 @@ The app allows you to browse your news feed, add new posts, edit and delete them
 - daisyUI & TailwindCSS
 - Dexie.js (indexedDB wrapper)
 - Storybook
-- [NX](https://nx.dev) (Smart Monorepos · Fast CI)
 
 ## Getting Started
 
@@ -69,9 +68,25 @@ The containerized application can be deployed to any platform that supports Dock
 - Fly.io
 - Railway
 
-## NX
+## Workspace commands
 
-| Build system, optimized for monorepos
+This repository is a small pnpm workspace with two packages:
 
-- Run "pnpm exec nx run-many -t build" to run the build target for every project in the workspace. Run it again to replay the cached computation. https://nx.dev/features/cache-task-results
-- Run "pnpm exec nx graph" to see the graph of projects and tasks in your workspace. https://nx.dev/core-features/explore-graph
+- **client** – the application code under `apps/client`
+- **docs** – Storybook and supporting docs under `apps/docs`
+
+You can run each package from the repository root using the helper scripts:
+
+```sh
+pnpm run dev             # client dev server
+pnpm run build           # client production build
+pnpm run docs:dev        # docs dev server
+pnpm run docs:storybook  # docs Storybook
+```
+
+If you prefer direct filters, the following commands mirror the scripts above:
+
+```sh
+pnpm --filter client dev
+pnpm --filter docs storybook
+```

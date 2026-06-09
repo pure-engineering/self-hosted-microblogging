@@ -36,11 +36,6 @@
     "url": "https://github.com/pure-js/self-hosted-microblogging/issues"
   },
   "devDependencies": {
-    "@nx/eslint": "20.1.4",
-    "@nx/playwright": "20.1.4",
-    "@nx/storybook": "20.1.4",
-    "@nx/vite": "20.1.4",
-    "@nx/web": "20.1.4",
     "@playwright/test": "^1.49.1",
     "@storybook/experimental-addon-test": "^8.6.3",
     "@types/node": "^24.13.1",
@@ -59,7 +54,6 @@
     "eslint-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-unicorn": "^55.0.0",
-    "nx": "20.1.4",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "standard-version": "^9.5.0",
@@ -71,6 +65,5 @@
   ],
   "engines": {
     "pnpm": ">=11"
-  },
-  "nx": {}
+  }
 }

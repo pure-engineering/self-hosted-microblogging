@@ -50,5 +50,9 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "engines": {
+    "pnpm": ">=11"
+  },
+  "packageManager": "pnpm@11"
 }

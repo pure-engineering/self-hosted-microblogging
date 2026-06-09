@@ -36,7 +36,7 @@
     "url": "https://github.com/pure-js/self-hosted-microblogging/issues"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.60.0",
     "@storybook/experimental-addon-test": "^8.6.3",
     "@types/node": "^24.13.1",
     "@typescript-eslint/eslint-plugin": "^6.21.0",

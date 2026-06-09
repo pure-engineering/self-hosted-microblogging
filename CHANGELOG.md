@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.12.4](https://github.com/pure-engineering/self-hosted-microblogging/compare/v2.12.3...v2.12.4) (2026-06-09)
+
+
+### Bug Fixes
+
+* missing fetch abortion ([#525](https://github.com/pure-engineering/self-hosted-microblogging/issues/525)) ([bb75740](https://github.com/pure-engineering/self-hosted-microblogging/commit/bb75740c745e4d2209ae53f536920af5b833c0e1))
+
 ## [2.12.3](https://github.com/pure-js/self-hosted-microblogging/compare/v2.12.2...v2.12.3) (2025-01-17)
 
 

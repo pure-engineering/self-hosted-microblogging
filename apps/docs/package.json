@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "client": "workspace:*",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.5",
@@ -27,7 +27,7 @@
     "@storybook/react": "^8.6.3",
     "@storybook/react-vite": "^8.6.3",
     "@storybook/test": "^8.6.3",
-    "@types/react": "^19.2.7",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/browser": "^3.0.7",

@@ -40,8 +40,7 @@ ci:
 # Root-level config files
 config:
   - changed-files:
-      - any-glob-to-any-file:
-          ['*.yml', '*.yaml', '*.json', '.node-version', '!pnpm-lock.yaml']
+      - any-glob-to-any-file: ['*.yml', '*.yaml', '*.json', '.node-version']
 # Dependency changes
 deps:
   - changed-files:

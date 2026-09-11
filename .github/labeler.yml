@@ -37,10 +37,13 @@ ci:
   - changed-files:
       - any-glob-to-any-file: ['.github/workflows/**', '.github/labeler.yml']
 
-# Root-level config files
+# Root-level config files (except pnpm-lock.yaml)
 config:
-  - changed-files:
-      - any-glob-to-any-file: ['*.yml', '*.yaml', '*.json', '.node-version']
+  - all:
+      - changed-files:
+          - any-glob-to-any-file:
+              ['*.yml', '*.yaml', '*.json', '.node-version']
+          - all-globs-to-all-files: '!pnpm-lock.yaml'
 # Dependency changes
 deps:
   - changed-files:

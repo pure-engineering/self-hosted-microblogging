@@ -5,7 +5,7 @@ frontend:
   - changed-files:
       - any-glob-to-any-file: ['apps/client/**']
 
-# Documentation / Storybook / Stories
+# Documentation / Storybook / Stories / Markdown
 docs:
   - changed-files:
       - any-glob-to-any-file:
@@ -14,6 +14,7 @@ docs:
             '.storybook/**',
             '**/*.stories.ts',
             '**/*.stories.tsx',
+            '**/*.md',
           ]
 
 # End-to-end tests (Playwright)

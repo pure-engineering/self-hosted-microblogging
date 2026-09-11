@@ -1,58 +1,44 @@
-# 🏷️ Auto-labels based on changed paths (actions/labeler v5+ syntax)
+# 🏷️ Auto-labels based on changed paths
 
 # Client application source
 frontend:
-  - changed-files:
-      any-glob-to-include:
-        - 'apps/client/**'
+  - 'apps/client/**'
 
 # Documentation / Storybook / Stories
 docs:
-  - changed-files:
-      any-glob-to-include:
-        - 'apps/docs/**'
-        - '.storybook/**'
-        - '**/*.stories.ts'
-        - '**/*.stories.tsx'
+  - 'apps/docs/**'
+  - '.storybook/**'
+  - '**/*.stories.ts'
+  - '**/*.stories.tsx'
 
 # End-to-end tests (Playwright)
 e2e:
-  - changed-files:
-      any-glob-to-include:
-        - 'tests/**'
-        - 'playwright/**'
-        - 'playwright.config.ts'
+  - 'tests/**'
+  - 'playwright/**'
+  - 'playwright.config.ts'
 
 # Unit tests
 unit-test:
-  - changed-files:
-      any-glob-to-include:
-        - 'apps/client/**/*.test.ts'
-        - 'apps/client/**/*.test.tsx'
-        - 'apps/client/**/*.spec.ts'
+  - 'apps/client/**/*.test.ts'
+  - 'apps/client/**/*.test.tsx'
+  - 'apps/client/**/*.spec.ts'
 
 # CI/CD workflows and config
 ci:
-  - changed-files:
-      any-glob-to-include:
-        - '.github/workflows/**'
-        - '.github/labeler.yml'
+  - '.github/workflows/**'
+  - '.github/labeler.yml'
 
 # Root-level config files
 config:
-  - changed-files:
-      any-glob-to-include:
-        - '*.yml'
-        - '*.yaml'
-        - '*.json'
-        - '.node-version'
-        - '!pnpm-lock.yaml'
+  - '*.yml'
+  - '*.yaml'
+  - '*.json'
+  - '.node-version'
+  - '!pnpm-lock.yaml'
 
 # Dependency changes
 deps:
-  - changed-files:
-      any-glob-to-include:
-        - 'package.json'
-        - 'pnpm-lock.yaml'
-        - 'pnpm-workspace.yaml'
-        - 'apps/*/package.json'
+  - 'package.json'
+  - 'pnpm-lock.yaml'
+  - 'pnpm-workspace.yaml'
+  - 'apps/*/package.json'

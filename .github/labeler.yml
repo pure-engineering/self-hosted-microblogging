@@ -2,50 +2,56 @@
 
 # Client application source
 frontend:
-  - any:
-      - 'apps/client/**'
+  - changed-files:
+      - any-glob-to-any-file: ['apps/client/**']
 
-# Documentation / Storybook / Stories
+# Documentation / Storybook / Stories / Markdown
 docs:
   - changed-files:
-      - 'apps/docs/**'
-      - '.storybook/**'
-      - '**/*.stories.ts'
-      - '**/*.stories.tsx'
+      - any-glob-to-any-file:
+          [
+            'apps/docs/**',
+            '.storybook/**',
+            '**/*.stories.ts',
+            '**/*.stories.tsx',
+            '**/*.md',
+          ]
 
 # End-to-end tests (Playwright)
 e2e:
-  - any:
-      - 'tests/**'
-      - 'playwright/**'
-      - 'playwright.config.ts'
+  - changed-files:
+      - any-glob-to-any-file:
+          ['tests/**', 'playwright/**', 'playwright.config.ts']
 
 # Unit tests
 unit-test:
-  - any:
-      - 'apps/client/**/*.test.ts'
-      - 'apps/client/**/*.test.tsx'
-      - 'apps/client/**/*.spec.ts'
+  - changed-files:
+      - any-glob-to-any-file:
+          [
+            'apps/client/**/*.test.ts',
+            'apps/client/**/*.test.tsx',
+            'apps/client/**/*.spec.ts',
+          ]
 
 # CI/CD workflows and config
 ci:
-  - any:
-      - '.github/workflows/**'
-      - '.github/labeler.yml'
+  - changed-files:
+      - any-glob-to-any-file: ['.github/workflows/**', '.github/labeler.yml']
 
-# Root-level config files
+# Root-level config files (except pnpm-lock.yaml)
 config:
-  - any:
-      - '*.yml'
-      - '*.yaml'
-      - '*.json'
-      - '.node-version'
-      - '!pnpm-lock.yaml'
-
+  - all:
+      - changed-files:
+          - any-glob-to-any-file:
+              ['*.yml', '*.yaml', '*.json', '.node-version']
+          - all-globs-to-all-files: '!pnpm-lock.yaml'
 # Dependency changes
 deps:
-  - any:
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'apps/*/package.json'
+  - changed-files:
+      - any-glob-to-any-file:
+          [
+            'package.json',
+            'pnpm-lock.yaml',
+            'pnpm-workspace.yaml',
+            'apps/*/package.json',
+          ]

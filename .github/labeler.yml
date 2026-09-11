@@ -1,44 +1,51 @@
-# 🏷️ Auto-labels based on changed paths
+# 🏷️ Auto-labels based on changed paths (actions/labeler v6 syntax)
 
 # Client application source
 frontend:
-  - 'apps/client/**'
+  - any:
+      - 'apps/client/**'
 
 # Documentation / Storybook / Stories
 docs:
-  - 'apps/docs/**'
-  - '.storybook/**'
-  - '**/*.stories.ts'
-  - '**/*.stories.tsx'
+  - changed-files:
+      - 'apps/docs/**'
+      - '.storybook/**'
+      - '**/*.stories.ts'
+      - '**/*.stories.tsx'
 
 # End-to-end tests (Playwright)
 e2e:
-  - 'tests/**'
-  - 'playwright/**'
-  - 'playwright.config.ts'
+  - any:
+      - 'tests/**'
+      - 'playwright/**'
+      - 'playwright.config.ts'
 
 # Unit tests
 unit-test:
-  - 'apps/client/**/*.test.ts'
-  - 'apps/client/**/*.test.tsx'
-  - 'apps/client/**/*.spec.ts'
+  - any:
+      - 'apps/client/**/*.test.ts'
+      - 'apps/client/**/*.test.tsx'
+      - 'apps/client/**/*.spec.ts'
 
 # CI/CD workflows and config
 ci:
-  - '.github/workflows/**'
-  - '.github/labeler.yml'
+  - any:
+      - '.github/workflows/**'
+      - '.github/labeler.yml'
 
 # Root-level config files
 config:
-  - '*.yml'
-  - '*.yaml'
-  - '*.json'
-  - '.node-version'
-  - '!pnpm-lock.yaml'
+  - any:
+      - '*.yml'
+      - '*.yaml'
+      - '*.json'
+      - '.node-version'
+      - '!pnpm-lock.yaml'
 
 # Dependency changes
 deps:
-  - 'package.json'
-  - 'pnpm-lock.yaml'
-  - 'pnpm-workspace.yaml'
-  - 'apps/*/package.json'
+  - any:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'apps/*/package.json'

@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@storybook/experimental-addon-test": "^8.6.3",
+    "@storybook/experimental-addon-test": "^8.6.14",
     "@types/node": "^24.13.1",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",

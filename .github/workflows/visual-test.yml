@@ -6,10 +6,14 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'apps/client/**'
       - 'apps/docs/**'
       - '.storybook/**'
       - '**/*.stories.tsx'
       - '**/*.stories.ts'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
   workflow_dispatch:
 
 permissions:

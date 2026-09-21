@@ -2,6 +2,8 @@ ci:
   collect:
     numberOfRuns: 5
     startServerCommand: pnpm run preview
+    startServerReadyPattern: 'Local:'
+    startServerReadyTimeout: 60000
     url:
       - 'http://localhost:4173/self-hosted-microblogging/'
       - 'http://localhost:4173/self-hosted-microblogging/posts/1'

@@ -5,13 +5,18 @@ on:
     branches: [main]
     paths-ignore:
       - 'apps/docs/**'
+      - '**.md'
   pull_request:
     branches: [main]
     paths-ignore:
       - 'apps/docs/**'
+      - '**.md'
+
+permissions:
+  contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -21,7 +26,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['lts/*']
         include:
           - task: format:check
             display: Check formatting
@@ -31,15 +35,17 @@ jobs:
             display: Typecheck
           - task: test
             display: Test
+          - task: build
+            display: Build
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with:
           version: 12
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js from .node-version
         uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: '.node-version'
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

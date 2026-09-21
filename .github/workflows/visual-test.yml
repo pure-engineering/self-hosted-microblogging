@@ -2,16 +2,34 @@ name: Visual testing & review
 
 on:
   push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/client/**'
+      - 'apps/docs/**'
+      - '.storybook/**'
+      - '**/*.stories.tsx'
+      - '**/*.stories.ts'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   chromatic-deployment:
     runs-on: ubuntu-latest
+    if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
     defaults:
       run:
         working-directory: ./apps/docs
-    strategy:
-      matrix:
-        node-version: ['lts/*']
     steps:
       - uses: actions/checkout@v7
         with:
@@ -19,15 +37,15 @@ jobs:
       - uses: pnpm/action-setup@v6
         with:
           version: 12
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+      - name: Use Node.js from .node-version
+        uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: '.node-version'
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run Chromatic
-        uses: chromaui/action@latest
+        uses: chromaui/action@v11
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: ./apps/docs

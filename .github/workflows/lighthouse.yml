@@ -3,12 +3,14 @@ name: Lighthouse CI
 on:
   push:
     branches: [main]
-    paths:
-      - 'apps/client/**'
+    paths-ignore:
+      - 'apps/docs/**'
+      - '**.md'
   pull_request:
     branches: [main]
-    paths:
-      - 'apps/client/**'
+    paths-ignore:
+      - 'apps/docs/**'
+      - '**.md'
   workflow_dispatch:
 
 permissions:

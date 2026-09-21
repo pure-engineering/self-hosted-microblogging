@@ -18,9 +18,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['lts/*', latest]
     defaults:
       run:
         working-directory: ./apps/client
@@ -29,10 +26,10 @@ jobs:
       - uses: pnpm/action-setup@v6
         with:
           version: 12
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js from .node-version
         uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: '.node-version'
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -43,6 +40,6 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v7
         with:
-          name: client-build_${{ matrix.node-version == 'lts/*' && 'lts-current' || matrix.node-version }}
+          name: client-build
           path: apps/client/dist/
           retention-days: 7

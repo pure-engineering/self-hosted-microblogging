@@ -2,6 +2,21 @@ name: Lighthouse CI
 
 on:
   push:
+    branches: [main]
+    paths:
+      - 'apps/client/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/client/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lighthouseci:
@@ -9,25 +24,23 @@ jobs:
     defaults:
       run:
         working-directory: ./apps/client
-    strategy:
-      matrix:
-        node-version: ['lts/*', 'latest']
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with:
           version: 12
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js lts/*
         uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 'lts/*'
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile && pnpm add -g @lhci/cli@0.15.x
+        run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm run build
         env:
           VITE_GROWTH_BOOK_KEY: ${{ secrets.VITE_GROWTH_BOOK_KEY }}
-      - run: lhci autorun
+      - name: Run Lighthouse CI
+        run: pnpm dlx @lhci/cli@0.15.x autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

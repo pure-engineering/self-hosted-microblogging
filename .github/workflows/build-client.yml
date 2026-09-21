@@ -2,7 +2,18 @@ name: Build Client App
 
 on:
   push:
+    branches: [main]
+    paths-ignore:
+      - 'apps/docs/**'
+      - '**.md'
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -34,3 +45,4 @@ jobs:
         with:
           name: client-build_${{ matrix.node-version == 'lts/*' && 'lts-current' || matrix.node-version }}
           path: apps/client/dist/
+          retention-days: 7

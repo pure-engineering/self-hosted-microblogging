@@ -5,13 +5,18 @@ on:
     branches: [main]
     paths-ignore:
       - 'apps/docs/**'
+      - '**.md'
   pull_request:
     branches: [main]
     paths-ignore:
       - 'apps/docs/**'
+      - '**.md'
+
+permissions:
+  contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -31,6 +36,8 @@ jobs:
             display: Typecheck
           - task: test
             display: Test
+          - task: build
+            display: Build
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6

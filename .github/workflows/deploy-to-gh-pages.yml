@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: 'pages'
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 defaults:
   run:
@@ -25,18 +25,15 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['lts/*']
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with:
           version: 12
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js lts/*
         uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 'lts/*'
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -45,7 +42,7 @@ jobs:
         env:
           VITE_GROWTH_BOOK_KEY: ${{ secrets.VITE_GROWTH_BOOK_KEY }}
       - name: Upload static files as artifact
-        id: deployment
+        id: upload-pages
         uses: actions/upload-pages-artifact@v5
         with:
           path: apps/client/dist

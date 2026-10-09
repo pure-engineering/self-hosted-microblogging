@@ -2,65 +2,59 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 
 import { db } from '~/services/db';
+import type { IAuthor, IPost } from '~/services/db';
 
-interface IAuthor {
-  userId: string;
-}
-
-function Author({ userId }: IAuthor) {
-  const [name, setName] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
-
-  async function authors() {
-    const currentAuthor = await db.authors.get(userId);
-    if (currentAuthor) {
-      setName(currentAuthor.name);
-      setUsername(currentAuthor.username);
-    }
-  }
+function Author({ userId }: { userId: string }) {
+  const [author, setAuthor] = useState<IAuthor | null | undefined>(undefined);
 
   useEffect(() => {
-    authors();
-  }, []);
+    let stale = false;
+    db.authors
+      .where('id')
+      .equals(userId)
+      .toArray()
+      .then((rows) => {
+        if (!stale) {
+          setAuthor(rows[0] ?? null);
+        }
+      });
+    return () => {
+      stale = true;
+    };
+  }, [userId]);
 
-  return userId ? (
+  if (author === undefined) {
+    return <span className="text-muted" />;
+  }
+
+  if (author === null) {
+    return <span className="text-muted">Anonymous</span>;
+  }
+
+  return (
     <div>
-      <Link to={`/users/${username}`} className="link link-neutral">
-        {name}
+      <Link to={`/users/${author.username}`} className="link link-neutral">
+        {author.name}
       </Link>{' '}
-      <span className="text-muted">{`@${username}`}</span>
+      <span className="text-muted">{`@${author.username}`}</span>
     </div>
-  ) : (
-    <span className="text-muted">Anonimous</span>
   );
 }
 
-export interface IBlogPost {
-  id: number;
-  img?: {
-    width: number;
-    height: number;
-    url: string;
-  };
-  heading: string;
-  text: string;
-  createdAt: number;
-  userId: string;
-}
+export type IBlogPost = IPost;
 
 export interface BlogPostProps {
   id: number;
-  img?: {
-    width: number;
-    height: number;
-    url: string;
-  };
+  img?: IPost['img'];
   heading: string;
   text: string;
+  hashtags?: string[];
   date?: string;
   htmlDatetime?: string;
   userId: string;
+  liked?: boolean;
   onDelete: (id: number) => void;
+  onToggleLike: (id: number, next: boolean) => void;
 }
 
 export interface IUser {
@@ -77,17 +71,18 @@ function BlogPost({
   id,
   heading,
   text,
+  hashtags,
   date,
   htmlDatetime,
   img,
   userId,
+  liked,
   onDelete,
+  onToggleLike,
 }: BlogPostProps) {
-  const [isLiked, setIsLiked] = useState(false);
-
   return (
     <article className="card mb-3 rounded-md border border-gray-400">
-      {img && (
+      {img && img.url && (
         <figure>
           <img
             className="img-fluid"
@@ -113,6 +108,11 @@ function BlogPost({
           </Link>
         </h3>
         <p className="card-text">{text}</p>
+        {hashtags && hashtags.length > 0 && (
+          <p className="card-text text-sm">
+            {hashtags.map((h) => `#${h}`).join(' ')}
+          </p>
+        )}
       </div>
       <div className="grid grid-cols-12 p-3 pb-1">
         <div className="col-span-6">
@@ -121,11 +121,11 @@ function BlogPost({
             title="Like it!"
             type="button"
             onClick={(e) => {
-              setIsLiked(!isLiked);
+              onToggleLike(id, !liked);
               e.currentTarget.blur();
             }}
           >
-            {isLiked ? (
+            {liked ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -177,7 +177,10 @@ function BlogPost({
               title="Remove post"
               type="button"
               onClick={() => {
-                onDelete(id);
+                // eslint-disable-next-line no-alert
+                if (window.confirm(`Delete post "${heading}"?`)) {
+                  onDelete(id);
+                }
               }}
             >
               <svg
@@ -192,15 +195,6 @@ function BlogPost({
                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
               </svg>
             </button>
-            {/* <button
-                  className="btn btn-default"
-                  title="Show more options"
-                  type="button"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                  </svg>
-                </button> */}
           </div>
         </div>
       </div>

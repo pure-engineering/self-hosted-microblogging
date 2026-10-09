@@ -19,7 +19,10 @@ function Info({ name }: IUser) {
 function UserInfo() {
   const { userName } = useParams();
   const authorArr = useLiveQuery(() =>
-    db.authors.filter(({ username }) => username === userName).toArray(),
+    db.authors
+      .where('username')
+      .equals(userName ?? '')
+      .toArray(),
   );
 
   return authorArr

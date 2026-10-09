@@ -18,11 +18,13 @@ export interface IPost {
   createdAt: number;
   hashtags?: string[];
   userId: string;
-  image?: {
+  img?: {
     width?: number;
     height?: number;
-    url?: File;
+    url?: string;
   };
+  editedAt?: number;
+  liked?: boolean;
 }
 
 export class MySubClassedDexie extends Dexie {
@@ -36,10 +38,41 @@ export class MySubClassedDexie extends Dexie {
       posts: 'id, heading, text, createdAt, hashtags, userId',
       authors: 'id, username, name',
     });
+    this.version(2)
+      .stores({
+        posts: 'id, heading, text, createdAt, hashtags, userId',
+        authors: 'id, username, name',
+      })
+      .upgrade(async (tx) => {
+        await tx
+          .table('posts')
+          .toCollection()
+          .modify((p) => {
+            if (p.image && typeof p.image.url === 'string') {
+              // eslint-disable-next-line no-param-reassign
+              p.img = {
+                width: p.image.width,
+                height: p.image.height,
+                url: p.image.url,
+              };
+            }
+            // eslint-disable-next-line no-param-reassign
+            delete p.image;
+            if (typeof p.editedAt === 'string') {
+              // eslint-disable-next-line no-param-reassign
+              p.editedAt = Math.floor(Number(p.editedAt) / 1000);
+            }
+          });
+      });
   }
 }
 
 export const db = new MySubClassedDexie();
+
+export async function nextPostId(): Promise<number> {
+  const last = await db.posts.orderBy('id').last();
+  return (last?.id ?? 0) + 1;
+}
 
 db.posts.count((count) => {
   if (count === 0) {

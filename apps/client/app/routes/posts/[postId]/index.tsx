@@ -33,7 +33,7 @@ function Post({ heading, text }: Partial<IBlogPost>) {
 function BlogPost() {
   const { postId } = useParams();
   const postArr = useLiveQuery(() =>
-    db.posts.filter(({ id }) => id === Number(postId)).toArray(),
+    db.posts.where('id').equals(Number(postId)).toArray(),
   );
 
   return postArr

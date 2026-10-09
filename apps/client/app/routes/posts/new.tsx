@@ -4,16 +4,13 @@ import { useNavigate } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Input } from '~/components/input';
-import { db } from '~/services/db';
-
-function getRandomInt(max: number) {
-  return Math.floor(Math.random() * max);
-}
+import { db, nextPostId } from '~/services/db';
+import { parseHashtags } from '~/services/parse-hashtags';
 
 function AddPost() {
   const [heading, setHeading] = useState('');
   const [text, setText] = useState('');
-  const [image, setImage] = useState<string | ArrayBuffer | null>(null);
+  const [image, setImage] = useState<string | null>(null);
   const [status, setStatus] = useState('');
   const [hashtags, setHashtags] = useState('');
 
@@ -26,7 +23,9 @@ function AddPost() {
     reader.addEventListener(
       'load',
       () => {
-        setImage(reader.result);
+        if (typeof reader.result === 'string') {
+          setImage(reader.result);
+        }
       },
       false,
     );
@@ -36,24 +35,35 @@ function AddPost() {
     }
   }
 
-  // async function editPost() {
-  //   const post = await db.posts
-  //     .get(postId);
-  //   console.log(post.heading, '333');
-  // }
-  // editPost();
-
   async function addPost() {
     try {
-      const id = await db.posts.add({
-        id: getRandomInt(999999),
-        heading,
-        text,
-        createdAt: Math.floor(Date.now() / 1000),
-        userId: uuidv4(),
-        // @ts-expect-error TODO: fix later
-        image,
-      });
+      let id: number | undefined;
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        const candidateId = await nextPostId();
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          id = await db.posts.add({
+            id: candidateId,
+            heading,
+            text,
+            createdAt: Math.floor(Date.now() / 1000),
+            userId: uuidv4(),
+            hashtags: parseHashtags(hashtags),
+            img: image ? { url: image } : undefined,
+          });
+          break;
+        } catch (error) {
+          if ((error as Error)?.name !== 'ConstraintError') {
+            throw error;
+          }
+        }
+      }
+
+      if (id === undefined) {
+        setStatus(`Failed to add ${heading}: could not allocate a free id`);
+        return;
+      }
 
       setStatus(`Post "${heading}" successfully added. Got id ${id}`);
       navigate('/');
@@ -78,7 +88,7 @@ function AddPost() {
           <div className="col-span-12 md:col-span-10 lg:col-span-6">
             <img
               id="preview"
-              src={typeof image === 'string' ? image : undefined}
+              src={image}
               alt="Card cap"
               className="card-img-top"
             />
@@ -129,12 +139,6 @@ function AddPost() {
               />
             </div>
             <div className="input-group mb-3">
-              {/* <label
-                className="text-sm flex-1"
-                htmlFor="uploadImageInput"
-              >
-                Upload image
-              </label> */}
               <input
                 id="uploadImageInput"
                 type="file"

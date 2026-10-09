@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
 
 import { db } from '~/services/db';
+import { parseHashtags } from '~/services/parse-hashtags';
 import type { IBlogPost } from '~/components/post-preview';
 
 interface IBlogPostProps {
@@ -19,7 +20,7 @@ export function EditPost({ post }: IBlogPostProps) {
   const [text, setText] = useState(post.text);
   const [img, setImg] = useState(post.img);
   const [status, setStatus] = useState<IStatus | null>(null);
-  const [hashtags, setHashtags] = useState('');
+  const [hashtags, setHashtags] = useState(post.hashtags?.join(', ') ?? '');
 
   const navigate = useNavigate();
   const { postId } = useParams();
@@ -31,8 +32,9 @@ export function EditPost({ post }: IBlogPostProps) {
     reader.addEventListener(
       'load',
       () => {
-        // @ts-expect-error TODO: fix later
-        setImg({ url: reader.result });
+        if (typeof reader.result === 'string') {
+          setImg({ url: reader.result });
+        }
       },
       false,
     );
@@ -45,11 +47,11 @@ export function EditPost({ post }: IBlogPostProps) {
   async function UpdatePost() {
     try {
       await db.posts
-        // @ts-expect-error TODO: fix later
         .update(Number(postId), {
           heading,
           text,
-          editedAt: Date.now().toString(),
+          editedAt: Math.floor(Date.now() / 1000),
+          hashtags: parseHashtags(hashtags),
           img,
         })
         .then((updated) => {
@@ -133,12 +135,6 @@ export function EditPost({ post }: IBlogPostProps) {
               />
             </div>
             <div className="input-group mb-3">
-              {/* <label
-                className="input-group-text"
-                htmlFor="uploadImageInput"
-              >
-                Upload image
-              </label> */}
               <input
                 id="uploadImageInput"
                 type="file"
@@ -166,7 +162,7 @@ export function EditPost({ post }: IBlogPostProps) {
 function EditPostWrapper() {
   const { postId } = useParams();
   const posts = useLiveQuery(() =>
-    db.posts.filter(({ id }) => id === Number(postId)).toArray(),
+    db.posts.where('id').equals(Number(postId)).toArray(),
   );
 
   if (!posts) {

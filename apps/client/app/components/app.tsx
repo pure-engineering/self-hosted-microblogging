@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router';
 import { GrowthBook, GrowthBookProvider } from '@growthbook/growthbook-react';
 
 import Header from '~/components/header';
-import Alert from '~/components/alert';
 import Breadcrumbs from '~/components/breadcrumbs';
 
 // Create a GrowthBook instance
@@ -51,16 +50,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // TODO: replace with real targeting attributes
     growthbook.setAttributes({
-      id: 'foo',
-      deviceId: 'foo',
-      company: 'foo',
-      loggedIn: true,
-      employee: true,
-      country: 'foo',
-      browser: 'foo',
       url: window.location.href,
+      browser: navigator.userAgent,
+      loggedIn: false,
     });
   }, [location]);
 
@@ -68,7 +61,6 @@ function App() {
     <GrowthBookProvider growthbook={growthbook}>
       <Header />
       {location.pathname !== '/' && <Breadcrumbs />}
-      <Alert message="" />
       <Outlet />
     </GrowthBookProvider>
   );
